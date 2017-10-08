@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"braineedisp/app/models"
 	"database/sql"
 	"fmt"
 	//Driver sql.
@@ -37,19 +38,11 @@ func InitDB() {
 	}
 }
 
-//Brainee : structure des brainees
-type Brainee struct {
-	id     string
-	author string
-	brand  string
-	text   string
-}
-
 //allons chercher dans la base de données
-func getBrainee(b Brainee) Brainee {
+func getBrainee(b models.Brainee) models.Brainee {
 	//envoi de la requête
 	sql := "SELECT * FROM brainee WHERE id = ?"
-	rows, err := DB.Query(sql, b.id) //id est une clé primaire auto-incrémentée
+	rows, err := DB.Query(sql, b.ID) //id est une clé primaire auto-incrémentée
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -57,34 +50,34 @@ func getBrainee(b Brainee) Brainee {
 
 	//on récupère les données
 	for rows.Next() {
-		err := rows.Scan(&b.id, &b.author, &b.text, &b.brand) //alors on assigne avec des pointeurs
+		err := rows.Scan(&b.ID, &b.Author, &b.Text, &b.Brand) //alors on assigne avec des pointeurs
 		if err != nil {
 			fmt.Println(err) //sinon c'est l'erreur
 		}
-		revel.INFO.Println(b.id, b.author, b.text, b.brand) //résultat dans la console
+		revel.INFO.Println(b.ID, b.Author, b.Text, b.Brand) //résultat dans la console
 		return b
 	}
 	err = rows.Err()
 	if err != nil {
 		fmt.Println(err) //ou erreur dans la console
 	}
-	revel.INFO.Println(b.id, b.author, b.brand, b.text)
+	revel.INFO.Println(b.ID, b.Author, b.Brand, b.Text)
 
 	return b
 }
 
 //écrivons dans la BDD
-func sendBrainee(b Brainee) Brainee {
+func sendBrainee(b models.Brainee) models.Brainee {
 	sql := "INSERT INTO brainee (author, text, brand) VALUES (?, ?, ?)"
-	_, err := DB.Exec(sql, b.author, b.text, b.brand)
+	_, err := DB.Exec(sql, b.Author, b.Text, b.Brand)
 	if err != nil {
 		panic(err)
 	}
 	//récupérons l'id pour afficher TOUTES les informations du brainee !
 	sql = "SELECT id FROM brainee WHERE author = ? AND text = ? AND brand = ?"
-	rows, err := DB.Query(sql, b.author, b.text, b.brand)
+	rows, err := DB.Query(sql, b.Author, b.Text, b.Brand)
 	for rows.Next() {
-		err := rows.Scan(&b.id)
+		err := rows.Scan(&b.ID)
 		if err != nil {
 			revel.ERROR.Println(err)
 		}
@@ -97,7 +90,7 @@ func sendBrainee(b Brainee) Brainee {
 	return b
 }
 
-//Index :
+//Index : il fallait en faire le rendu
 func (c App) Index(id string, author string, brand string, text string) revel.Result {
 	return c.Render()
 }
@@ -109,22 +102,22 @@ func (c App) Index(id string, author string, brand string, text string) revel.Re
 func (c App) Brainees(id string, author string, brand string, text string) revel.Result {
 	InitDB()
 
-	var b Brainee
+	var b models.Brainee
 	var status string
 
 	status = ""
 
 	//dans le cas où on envoie un ID pour trouver un brainee
 	if id != "" {
-		b.id = id
+		b.ID = id
 
 		b = getBrainee(b)
 
 		status = "Voici le brainee que vous avez demandé !"
-		id = b.id
-		author = b.author
-		brand = b.brand
-		text = b.text
+		id = b.ID
+		author = b.Author
+		brand = b.Brand
+		text = b.Text
 
 		if author == "" && brand == "" && text == "" {
 			status = "Aucun brainee trouvé avec cet id : "
@@ -135,17 +128,17 @@ func (c App) Brainees(id string, author string, brand string, text string) revel
 
 	//si on veut plutôt en envoyer un
 	if author != "" && brand != "" && text != "" {
-		b.author = author
-		b.brand = brand
-		b.text = text
+		b.Author = author
+		b.Brand = brand
+		b.Text = text
 
 		b = sendBrainee(b)
 
 		status = "Votre brainee a bien été envoyé ! Vous pouvez le visualiser ici :"
-		id = b.id
-		author = b.author
-		brand = b.brand
-		text = b.text
+		id = b.ID
+		author = b.Author
+		brand = b.Brand
+		text = b.Text
 
 		return c.Render(status, id, author, brand, text)
 	}

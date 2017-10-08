@@ -1,0 +1,48 @@
+{{set . "title" "Home"}}
+{{template "header.html" .}}
+
+<header class="jumbotron" style="background-color:#A9F16C">
+  <div class="container">
+    <div class="row">
+      <h1>Let's display brainees!</h1>
+      <p></p>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+  <div class="row">
+    <div class="span6">
+
+      <h2>Trouver un brainee :</h2>
+      <form action="/" method="POST" id="getBrainee">
+        id : <input type="text" name="id" id="sendID">
+        <input name="fetcher" type="submit" value="Voir le brainee">
+      </form>
+      <br/>
+      <h2>Envoyer un brainee :</h2>
+      <form action="/" method="GET" id="sendBrainee">
+        Nom :
+          <input type="text" name="author">
+        Marque :
+          <input type="text" name="brand"><br/>
+        Votre idée :<br/>
+          <textarea name="text" form="sendBrainee" cols="62" rows="10"></textarea><br/>
+        
+          <input type="submit" value="Envoyer">
+      </form>
+      {{template "flash.html" .}}
+      
+      <p>
+          {{.status}} <br/>
+          {{.id}} 
+          {{.author}} 
+          {{.brand}} <br/>
+          {{.text}} 
+      </p>
+      
+    </div>
+  </div>
+</div>
+
+{{template "footer.html" .}}

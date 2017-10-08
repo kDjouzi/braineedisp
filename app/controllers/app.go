@@ -105,7 +105,7 @@ func (c App) Index(id string, author string, brand string, text string) revel.Re
 	var b Brainee
 	var status string
 
-	status = "Il fait beau, non ?"
+	status = ""
 
 	//dans le cas où on envoie un ID pour trouver un brainee
 	if id != "" {
@@ -118,6 +118,10 @@ func (c App) Index(id string, author string, brand string, text string) revel.Re
 		author = b.author
 		brand = b.brand
 		text = b.text
+
+		if author == "" && brand == "" && text == "" {
+			status = "Aucun brainee trouvé avec cet id : "
+		}
 
 		return c.Render(status, id, author, brand, text)
 	}

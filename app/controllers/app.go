@@ -97,9 +97,16 @@ func sendBrainee(b Brainee) Brainee {
 	return b
 }
 
-//Index : création ou fetch du Brainee dans la BDD, affichage du texte dans le HTML
+//Index :
 func (c App) Index(id string, author string, brand string, text string) revel.Result {
+	return c.Render()
+}
 
+/**
+ * Brainees : Gérer les requêtes sur une deuxième page
+ * création ou fetch du Brainee dans la BDD, affichage du texte dans le HTML
+ */
+func (c App) Brainees(id string, author string, brand string, text string) revel.Result {
 	InitDB()
 
 	var b Brainee
@@ -144,4 +151,5 @@ func (c App) Index(id string, author string, brand string, text string) revel.Re
 	}
 
 	return c.Render(status, id, author, brand, text)
+
 }

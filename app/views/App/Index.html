@@ -15,13 +15,13 @@
     <div class="span6">
 
       <h2>Trouver un brainee :</h2>
-      <form action="/" method="POST" id="getBrainee">
-        id : <input type="text" name="id" id="sendID">
-        <input name="fetcher" type="submit" value="Voir le brainee">
+      <form action="/App/Brainees" method="GET" id="getBrainee">
+        id : <input type="text" name="id">
+        <input type="submit" value="Envoyer">
       </form>
 
       <h2>Envoyer un brainee :</h2>
-      <form action="/" method="GET" id="sendBrainee">
+      <form action="/App/Brainees" method="POST" id="sendBrainee">
         Nom :
           <input type="text" name="author">
         Marque :
@@ -32,17 +32,6 @@
           <input type="submit" value="Envoyer">
       </form>
       {{template "flash.html" .}}
-      
-      <hr style="background-color:#222222"/>
-
-      <p>
-          {{.status}} <br/>
-          id : {{.id}} <br/> 
-          auteur : {{.author}}<br/> 
-          marque : {{.brand}} <br/>
-          texte : {{.text}} 
-      </p>
-      
     </div>
   </div>
 </div>

@@ -10,6 +10,10 @@ module:testrunner
 GET     /                                       App.Index
 POST    /                                       App.Index
 
+POST   /brainees                                App.Brainees
+GET    /brainees/:id                            App.Brainees
+
+
 # Ignore favicon requests
 GET     /favicon.ico                            404
 

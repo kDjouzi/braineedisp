@@ -9,4 +9,4 @@ Si vous avez des questions sur ce projet, n'hésitez pas à me les poser par mai
 
 ## Version sur deux pages
 
-La version de la branche pg_separation est sur deux pagse. La branche master contient la version "onepage", pourvue des mêmes fonctions.
+La version de la branche pg_separation est sur deux pages. La branche master contient la version "onepage", pourvue des mêmes fonctions.
